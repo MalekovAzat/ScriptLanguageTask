@@ -32,7 +32,7 @@ class TestPolinomialMethods(unittest.TestCase):
         self.assertEqual(pol(
             [*([0]*100), 200, 300]).__str__(), '200x+300')
         self.assertEqual(pol(
-            [1, *([0]*2), 200, 300]).__str__(), '1x^4+200x+300')
+            [1, *([0]*2), 200, 300]).__str__(), 'x^4+200x+300')
         self.assertEqual(pol(
             [0]).__str__(), '0')
         self.assertEqual(pol(
@@ -40,7 +40,21 @@ class TestPolinomialMethods(unittest.TestCase):
         self.assertEqual(pol(
             [0, -1]).__str__(), '-1')
         self.assertEqual(pol(
-            [-1, 0, -1]).__str__(), '-1x^2-1')
+            [1]).__str__(), '1')
+        self.assertEqual(pol(
+            [-1]).__str__(), '-1')
+        self.assertEqual(pol(
+            [-1, 0, -1]).__str__(), '-x^2-1')
+        self.assertEqual(pol(
+            [1, 2, -4]).__str__(), 'x^2+2x-4')
+        self.assertEqual(pol(
+            [1, 1, 0]).__str__(), 'x^2+x')
+        self.assertEqual(pol(
+            [1, -1, 0]).__str__(), 'x^2-x')
+        self.assertEqual(pol(
+            [-1, -1, 0]).__str__(), '-x^2-x')
+        self.assertEqual(pol(
+            [-1, -1, 0]).__str__(), '-x^2-x')
 
     def test_add(self):
         self.assertEqual(

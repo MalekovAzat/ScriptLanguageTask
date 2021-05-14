@@ -1,5 +1,3 @@
-from scriptLanguagesTask import polynomial
-
 class Polynomial:
     def __init__(self, arg):
         if isinstance(arg, int):
@@ -37,38 +35,50 @@ class Polynomial:
         else:
             super().__setattr__(name, value)
 
-    def getTermList(self)->list:
+    def getTermList(self) -> list:
         return self.__termsList
 
     def __repr__(self) -> str:
         return f'Polinomial({self.__termsList[::-1]})'
 
-    def __str__(self) -> str:
+    def __str__(self):
         degrees = range(len(self.__termsList))[::-1]
         maxDegree = degrees[0]
         termList = self.__termsList[::-1]
         termStrList = []
 
         for (degree, termCoeff) in zip(degrees, termList):
-            if termCoeff != 0 and maxDegree != 0:
-                if not degree:
-                    termStrList.append(
-                        f'+{termCoeff}' if termCoeff > 0 else f'{termCoeff}')
-                elif degree == 1:
-                    if maxDegree == 1:
-                        termStrList.append(f'{termCoeff}x')
-                    else:
-                        termStrList.append(
-                            f'+{termCoeff}x' if termCoeff > 0 else f'{termCoeff}x')
-                elif degree == maxDegree:
-                    termStrList.append(f'{termCoeff}x^{degree}')
-                else:
-                    termStrList.append(
-                        f'+{termCoeff}x^{degree}' if termCoeff > 0 else f'{termCoeff}x^{degree}')
-            elif maxDegree == 0:
-                termStrList.append(f'{termCoeff}')
+            termStrList.append(self.__prepareCoeff__(termCoeff, degree, maxDegree) + self.__prepareDegree__(termCoeff, degree, maxDegree))
 
         return ''.join(termStrList)
+
+    def __prepareCoeff__(self, coeff, degree, maxDegree):
+        if coeff == 1 and degree != 0 and degree != maxDegree:
+            return '+'
+        elif coeff == -1 and degree != 0 and degree != maxDegree:
+            return '-'
+        if coeff == 1 and degree != 0 and degree == maxDegree:
+            return ''
+        elif coeff == -1 and degree != 0 and degree == maxDegree:
+            return '-'
+        elif coeff > 0 and maxDegree != degree:
+            return f'+{coeff}'
+        elif coeff > 0:
+            return f'{coeff}'
+        elif coeff < 0:
+            return f'{coeff}'
+        elif maxDegree == degree:
+            return f'{coeff}'
+        else:
+            return ''
+
+    def __prepareDegree__(self, coeff, degree, maxDegree):
+        if maxDegree == 0 or degree == 0 or coeff == 0:
+            return ''
+        elif degree == 1:
+            return 'x'
+        else: 
+            return f'x^{degree}'
 
     def __add__(self, elem):
         if isinstance(elem, int):
@@ -76,7 +86,8 @@ class Polynomial:
         elif isinstance(elem, Polynomial):
             return self.__addForPolynomial___(elem)
         else:
-            raise Exception('Provided incorrect type for second arg in __add__.')
+            raise Exception(
+                'Provided incorrect type for second arg in __add__.')
 
     def __addForPolynomial___(self, elem):
         termList1 = self.getTermList()
@@ -89,7 +100,7 @@ class Polynomial:
     def __addForConst__(self, elem):
         termList = self.getTermList().copy()
         termList[0] += elem
-        
+
         return Polynomial(termList[::-1])
 
     def __listAdd__(self, firstList: list, secondList: list) -> list:
@@ -109,9 +120,10 @@ class Polynomial:
         if isinstance(elem, int):
             return self.__addForConst__(elem)
         else:
-            raise Exception('Provided incorrect type for second arg in __radd__.')
+            raise Exception(
+                'Provided incorrect type for second arg in __radd__.')
 
-    def __invertTerms__(self)->list:
+    def __invertTerms__(self) -> list:
         return list(map(lambda x: -x, self.getTermList()))
 
     def __sub__(self, elem):
@@ -123,7 +135,8 @@ class Polynomial:
             resultList = self.__listAdd__(termList, invertedList)
             return Polynomial(resultList[::-1])
         else:
-            raise Exception('Provided incorrect type for second arg in __sub__.')
+            raise Exception(
+                'Provided incorrect type for second arg in __sub__.')
 
     def __rsub__(self, elem):
         if isinstance(elem, int):
@@ -131,11 +144,12 @@ class Polynomial:
             invertedList[0] += elem
             return Polynomial(invertedList[::-1])
         else:
-            raise Exception('Provided incorrect type for second arg in __rsub__.')
+            raise Exception(
+                'Provided incorrect type for second arg in __rsub__.')
 
     def __mul__(self, elem):
         if isinstance(elem, int):
-            return Polynomial(list(map(lambda x:x * elem, self.getTermList()))[::-1])
+            return Polynomial(list(map(lambda x: x * elem, self.getTermList()))[::-1])
         if isinstance(elem, Polynomial):
             termList1 = self.getTermList()
             termList2 = elem.getTermList()
@@ -143,9 +157,10 @@ class Polynomial:
             resultList = self.__mulList__(termList1, termList2)
             return Polynomial(resultList[::-1])
         else:
-            raise Exception('Provided incorrect type for second arg in __mul__.')
+            raise Exception(
+                'Provided incorrect type for second arg in __mul__.')
 
-    def __mulList__(self, firstList:list, secondList:list)->list:
+    def __mulList__(self, firstList: list, secondList: list) -> list:
         sizeOfList = len(firstList) + len(secondList) + 1
         resultList = [0] * sizeOfList
 
@@ -160,7 +175,8 @@ class Polynomial:
         if isinstance(elem, int):
             return self.__mul__(elem)
         else:
-            raise Exception('Provided incorrect type for second arg in __rmul__.')
+            raise Exception(
+                'Provided incorrect type for second arg in __rmul__.')
 
     def __eq__(self, elem) -> bool:
         if isinstance(elem, int):
@@ -169,7 +185,9 @@ class Polynomial:
         elif (isinstance(elem, Polynomial)):
             return self.getTermList() == elem.getTermList()
         else:
-            raise Exception('Provided incorrect type for second arg in __eq__.')
+            raise Exception(
+                'Provided incorrect type for second arg in __eq__.')
+
 
 if __name__ == '__name__':
     pass
