@@ -4,16 +4,16 @@ class Polynomial:
             self.__termsList = [arg]
         elif isinstance(arg, (list, tuple)):
             if len(arg) == 0:
-                raise Exception(
+                raise ValueError(
                     'List or tuple should contain at least one int element.')
             elif False in [isinstance(item, int) for item in arg]:
-                raise Exception('List or tuple should contain int args only.')
+                raise ValueError('List or tuple should contain int args only.')
             else:
                 self.__termsList = self.__preprocessTermList(list(arg)[::-1])
         elif isinstance(arg, Polynomial):
             self.__termsList = arg.getTermList().copy()
         else:
-            raise Exception('Incorrect arg in constructor Polynomial')
+            raise TypeError('Incorrect arg in constructor Polynomial')
 
     def __preprocessTermList(self, termList) -> list:
         maxValidDegreeIndex = 0
@@ -86,7 +86,7 @@ class Polynomial:
         elif isinstance(elem, Polynomial):
             return self.__addForPolynomial___(elem)
         else:
-            raise Exception(
+            raise TypeError(
                 'Provided incorrect type for second arg in __add__.')
 
     def __addForPolynomial___(self, elem):
@@ -120,7 +120,7 @@ class Polynomial:
         if isinstance(elem, int):
             return self.__addForConst__(elem)
         else:
-            raise Exception(
+            raise TypeError(
                 'Provided incorrect type for second arg in __radd__.')
 
     def __invertTerms__(self) -> list:
@@ -135,7 +135,7 @@ class Polynomial:
             resultList = self.__listAdd__(termList, invertedList)
             return Polynomial(resultList[::-1])
         else:
-            raise Exception(
+            raise TypeError(
                 'Provided incorrect type for second arg in __sub__.')
 
     def __rsub__(self, elem):
@@ -144,7 +144,7 @@ class Polynomial:
             invertedList[0] += elem
             return Polynomial(invertedList[::-1])
         else:
-            raise Exception(
+            raise TypeError(
                 'Provided incorrect type for second arg in __rsub__.')
 
     def __mul__(self, elem):
@@ -157,7 +157,7 @@ class Polynomial:
             resultList = self.__mulList__(termList1, termList2)
             return Polynomial(resultList[::-1])
         else:
-            raise Exception(
+            raise TypeError(
                 'Provided incorrect type for second arg in __mul__.')
 
     def __mulList__(self, firstList: list, secondList: list) -> list:
@@ -175,7 +175,7 @@ class Polynomial:
         if isinstance(elem, int):
             return self.__mul__(elem)
         else:
-            raise Exception(
+            raise TypeError(
                 'Provided incorrect type for second arg in __rmul__.')
 
     def __eq__(self, elem) -> bool:
@@ -185,7 +185,7 @@ class Polynomial:
         elif (isinstance(elem, Polynomial)):
             return self.getTermList() == elem.getTermList()
         else:
-            raise Exception(
+            raise TypeError(
                 'Provided incorrect type for second arg in __eq__.')
 
 

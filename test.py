@@ -1,5 +1,5 @@
 import unittest
-from ..polynomial.polynomial import Polynomial as pol
+from polynomial import Polynomial as pol
 
 class TestPolinomialMethods(unittest.TestCase):
     def test_repr(self):

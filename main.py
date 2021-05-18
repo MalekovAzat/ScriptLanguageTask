@@ -1,4 +1,4 @@
-from scriptLanguagesTask.tests import test
+import test
 import unittest
 
 def main():
